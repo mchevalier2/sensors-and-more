@@ -1,5 +1,5 @@
 import sys
-from datetime import date, datetime
+from datetime import datetime
 import numpy as np
 import pandas as pd
 
@@ -33,22 +33,21 @@ class Sensor:
         # datetime multiply by the sensor ID to have unique numbers for each
         # sensor.
 
+        np.random.seed(seed=self.start_time.toordinal() + dt.toordinal() )
+
         if np.random.random() > self.p_fail:
-            np.random.seed(seed=dt.toordinal() * (self.id+1))
-            print(dt)
-            print(dt.weekday(), dt.hour)
             if dt.weekday() == 6:
-                return 0, 'ok'
+                return 0
             if dt.hour < 8 or dt.hour >= 18:
-                return 0, 'ok'
+                return 0
 
             visits = np.random.normal(self.avg_visit, self.std_visit)
             visits = np.random.normal(self.avg_visit, self.std_visit)
             if np.random.random() < self.p_anom:
-                return int(visits * 0.4), "anom"
-            return int(visits), 'ok'
+                visits = visits * 0.1
+            return int(visits)
         else:
-            return 0, "fail"
+            return -1
 
 
     def __repr__(self, n:int = 1):
@@ -62,9 +61,9 @@ if __name__ == "__main__":
         year, month, day = [int(v) for v in sys.argv[1].split("-")]
     else:
         year, month, day = 2023, 10, 25
-    queried_date = date(year, month, day)
+    queried_date = datetime(year, month, day)
 
-    capteur = Sensor(0, 500, 150)
+    capteur = Sensor(0, 500, 150, start_time=queried_date)
     print(capteur)
     print(capteur.get_visit_counts(dt=pd.Timestamp('2021-09-15 10:03:30')))
     print(capteur.get_visit_counts(dt=pd.Timestamp('2022-09-15 11:03:30')))
@@ -72,3 +71,16 @@ if __name__ == "__main__":
     print(capteur.get_visit_counts(dt=pd.Timestamp('2024-09-15 19:03:30')))
     print(capteur.get_visit_counts(dt=pd.Timestamp('2024-08-04 19:03:30')))
     print(capteur.get_visit_counts(dt=datetime.now()))
+
+    visit_sensor = Sensor(0, 1000, 150, start_time=pd.Timestamp('2021-09-15 10:03:30'), p_fail=0.05, p_anom=0.2)
+    for test in range(100):
+        dt = datetime(2024, test % 12+1, test%30+1, test%24, 0, 0)
+        score = visit_sensor.get_visit_counts(dt)
+        if score == -1:
+            print(dt, score)
+        if score < 100 and score > 0:
+            print(dt, score)
+
+    #visit_sensor = Sensor(0, 1000, 150, start_time=datetime(2021, 9, 15, 10, 3, 30), p_fail=0.05, p_anom=0.1)
+    #visit_count = visit_sensor.get_visit_counts(datetime(2024, 4, 16, 3, 0, 0))
+    #assert visit_count == -1
