@@ -1,3 +1,5 @@
+""" My API to access to the store visit counts. """
+
 from datetime import datetime
 from typing import Optional
 
@@ -19,16 +21,23 @@ def visit(
     hour: int,
     sensor_id: Optional[int] = None,
 ) -> JSONResponse:
+    """
+        Dealing with all possible combinations of parameters.
+        Returning the visit counts.
+    """
+
     # If the store is not in the dictionary
-    if not (store_name in store_dict.keys()):
-        s = f"Store '{store_name}' not found. It should one of the following names: {", ".join(store_dict.keys())}."
+    if not store_name in store_dict:
+        s = f"Store '{store_name}' not found. It should one of the following " +\
+            f"names: {", ".join(store_dict.keys())}."
         return JSONResponse(status_code=404, content=s)
 
     # Check the value of sensor_id
     if sensor_id and (sensor_id > store_dict[store_name].n_sensors or sensor_id < 0):
         return JSONResponse(
             status_code=404,
-            content=f"Sensor_id for this shop should be between 0 and {store_dict[store_name].n_sensors-1}",
+            content="Sensor_id for this shop should be between 0 and " +\
+                    str(store_dict[store_name].n_sensors-1),
         )
 
     # Check the date
@@ -38,10 +47,10 @@ def visit(
         return JSONResponse(status_code=404, content="Enter a valid date")
 
     # Check the date is after the opening of the shop
-    if datetime(year, month, day, hour) < store_dict[store_name].start_time:
+    if datetime(year, month, day, hour) < store_dict[store_name].opening_date:
         return JSONResponse(
             status_code=404,
-            content=f"No data before {store_dict[store_name].start_time}",
+            content=f"No data before {store_dict[store_name].opening_date}",
         )
 
     # Check the date is in the past

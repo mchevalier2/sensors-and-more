@@ -16,7 +16,7 @@ def create_app() -> dict:
         store_dict[store_name[i]] = Store(
             name=store_name[i],
             n_sensors=store_n_sensors[i],
-            start_time=datetime(store_year_start[i], 1, 1, 8),
+            opening_date=datetime(store_year_start[i], 1, 1, 8),
         )
     return store_dict
 
