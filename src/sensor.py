@@ -33,7 +33,9 @@ class Sensor:
         # datetime multiply by the sensor ID to have unique numbers for each
         # sensor.
 
-        np.random.seed(seed=self.start_time.toordinal() + dt.toordinal() )
+        np.random.seed(
+            seed=self.start_time.toordinal() + dt.toordinal() + dt.hour + self.id
+        )
 
         if np.random.random() > self.p_fail:
             if dt.weekday() == 6:
