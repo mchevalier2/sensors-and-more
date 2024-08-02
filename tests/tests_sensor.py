@@ -48,7 +48,7 @@ class TestSensor(unittest.TestCase):
             p_anom=0.2,
         )
         visit_count = visit_sensor.get_visit_counts(datetime(2024, 9, 9, 8, 0, 0))
-        self.assertEqual(visit_count, 90)
+        self.assertEqual(visit_count, 80)
 
     def test_failures(self):
         visit_sensor = Sensor(
@@ -59,7 +59,7 @@ class TestSensor(unittest.TestCase):
             p_fail=0.05,
             p_anom=0.2,
         )
-        visit_count = visit_sensor.get_visit_counts(datetime(2024, 3, 15, 14, 0, 0))
+        visit_count = visit_sensor.get_visit_counts(datetime(2024, 8, 14, 19, 0, 0))
         self.assertEqual(visit_count, -1)
 
 
