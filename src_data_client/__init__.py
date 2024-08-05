@@ -1,7 +1,9 @@
 from datetime import datetime
 
-from src.store import Store
-
+try:
+    from src_data_client.store import Store
+except ModuleNotFoundError:
+    from store import Store
 
 def create_app() -> dict:
     """ """
@@ -23,4 +25,4 @@ def create_app() -> dict:
 
 if __name__ == "__main__":
     store_dict = create_app()
-    print(store_dict)
+    #print(store_dict)
