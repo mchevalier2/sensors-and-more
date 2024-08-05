@@ -3,7 +3,7 @@
 from datetime import datetime
 
 try:
-    from src.sensor import Sensor
+    from src_data_client.sensor import Sensor
 except ModuleNotFoundError:
     from sensor import Sensor
 

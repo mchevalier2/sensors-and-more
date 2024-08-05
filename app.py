@@ -6,7 +6,7 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from src import create_app
+from src_data_client import create_app
 
 store_dict = create_app()
 app = FastAPI()
@@ -71,7 +71,7 @@ def visit(
 
     if visit_counts < 0:
         return JSONResponse(
-            status_code=404, content="The sensor did not work on that date and time"
+            status_code=204, content="The sensor did not work on that date and time"
         )
 
     return JSONResponse(status_code=200, content=visit_counts)
