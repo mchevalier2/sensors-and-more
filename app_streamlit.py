@@ -10,13 +10,13 @@ import streamlit as st
 def load_daily_data():
     req = """
              SELECT *
-             FROM read_parquet('data/dat_sensors.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_sensors.parquet/*/*/*.parquet', hive_partitioning = true);
     """
     df_sensors = duckdb.query(req).df()
 
     req = """
              SELECT *
-             FROM read_parquet('data/dat_shops.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_shops.parquet/*/*/*.parquet', hive_partitioning = true);
     """
     df_shops = duckdb.query(req).df()
     return df_shops, df_sensors
@@ -25,13 +25,13 @@ def load_daily_data():
 def load_hourly_data():
     req = """
              SELECT *
-             FROM read_parquet('data/dat_sensors_hours.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_sensors_hours.parquet/*/*/*.parquet', hive_partitioning = true);
     """
     df_sensors = duckdb.query(req).df()
 
     req = """
              SELECT *
-             FROM read_parquet('data/dat_shops_hours.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_shops_hours.parquet/*/*/*.parquet', hive_partitioning = true);
     """
     df_shops = duckdb.query(req).df()
     return df_shops, df_sensors
@@ -94,6 +94,8 @@ if "data" not in os.listdir():
     os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
     os.system("python process_data.py")
+    print(os.list())
+    print("keyword")
 
 
 with st.sidebar:
