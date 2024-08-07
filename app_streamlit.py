@@ -1,10 +1,9 @@
-import duckdb
-import streamlit as st
-import plotly.express as px
-import pandas as pd
 from datetime import datetime as dt
 
-
+import duckdb
+import pandas as pd
+import plotly.express as px
+import streamlit as st
 
 
 def load_daily_data():
@@ -45,9 +44,9 @@ def filter_day(df, cb):
 
 
 def filter_dates(df, dates, resol):
-    if resol == 'Hourly':
+    if resol == "Hourly":
         df["date"] = df[["date", "hour"]].apply(str_as_date_hour, axis=1)
-    elif resol == 'Daily':
+    elif resol == "Daily":
         df["date"] = df["date"].apply(str_as_date_day)
     df = df[
         (df["date"] >= pd.to_datetime(dates[0]))
@@ -57,7 +56,7 @@ def filter_dates(df, dates, resol):
 
 
 def filter_hours(df, dates):
-    df = df.query(f'hour >= {dates[0]}').query(f'hour <= {dates[1]}')
+    df = df.query(f"hour >= {dates[0]}").query(f"hour <= {dates[1]}")
     return df
 
 
@@ -66,7 +65,7 @@ def str_as_date_day(s):
 
 
 def str_as_date_hour(s):
-    return dt.strptime(s.iloc[0] + ' ' + str(int(s.iloc[1])), "%Y-%m-%d %H")
+    return dt.strptime(s.iloc[0] + " " + str(int(s.iloc[1])), "%Y-%m-%d %H")
 
 
 def create_slider_dates(dfplot):
@@ -78,10 +77,13 @@ def create_slider_dates(dfplot):
     )
     return values
 
+
 def create_slider_openinghours(dfplot):
     values = st.slider(
         "Select a range of hours",
-        0, 23, (0, 23),
+        0,
+        23,
+        (0, 23),
     )
     return values
 
@@ -132,15 +134,14 @@ with st.sidebar:
 
     time_resol = st.selectbox(
         "Select the temporal resolution of the data.",
-        ('Daily', 'Hourly'),
+        ("Daily", "Hourly"),
         index=0,
     )
 
-    if(time_resol == 'Daily'):
+    if time_resol == "Daily":
         df_shops, df_sensors = load_daily_data()
     else:
         df_shops, df_sensors = load_hourly_data()
-
 
 
 if sensor is not None or shop is not None:
@@ -151,7 +152,7 @@ if sensor is not None or shop is not None:
         values_dates = create_slider_dates(dfplot)
         dfplot = filter_day(dfplot, cb_days)
         dfplot = filter_dates(dfplot, values_dates, time_resol)
-        if time_resol == 'Hourly':
+        if time_resol == "Hourly":
             values_hours = create_slider_openinghours(dfplot)
             dfplot = filter_hours(dfplot, values_hours)
 
@@ -170,7 +171,7 @@ if sensor is not None or shop is not None:
         values_dates = create_slider_dates(dfplot)
         dfplot = filter_day(dfplot, cb_days)
         dfplot = filter_dates(dfplot, values_dates, time_resol)
-        if time_resol == 'Hourly':
+        if time_resol == "Hourly":
             values_hours = create_slider_openinghours(dfplot)
             dfplot = filter_hours(dfplot, values_hours)
 

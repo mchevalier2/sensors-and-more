@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from src.sensor import Sensor
+from src_data_client.sensor import Sensor
 
 
 class TestSensor(unittest.TestCase):
@@ -43,7 +43,7 @@ class TestSensor(unittest.TestCase):
             0,
             1000,
             150,
-            start_time=datetime(2021, 9, 15, 10, 3, 30),
+            init_time=datetime(2021, 9, 15, 10, 3, 30),
             p_fail=0.05,
             p_anom=0.2,
         )
@@ -55,7 +55,7 @@ class TestSensor(unittest.TestCase):
             0,
             1000,
             150,
-            start_time=datetime(2021, 9, 15, 10, 3, 30),
+            init_time=datetime(2021, 9, 15, 10, 3, 30),
             p_fail=0.05,
             p_anom=0.2,
         )

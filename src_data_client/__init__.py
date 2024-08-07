@@ -20,7 +20,7 @@ def create_app() -> dict:
             name=store_name[i],
             n_sensors=store_n_sensors[i],
             opening_date=datetime(store_year_start[i], 1, 1, 0),
-            capacity=[(2024 - store_year_start[i] + 1) * x for x in [1000 , 150]],
+            capacity=[(2024 - store_year_start[i] + 1) * x for x in [1000, 150]],
             probs=[(2024 - store_year_start[i] + 1) * x for x in [0.01, 0.001]],
         )
     return store_dict
