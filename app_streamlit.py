@@ -2,6 +2,7 @@ import os
 from datetime import datetime as dt
 
 import duckdb
+import logging
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -94,9 +95,9 @@ if "data" not in os.listdir():
     os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
     os.system("python process_data.py")
-    print(os.listdir())
-    print(os.listdir('./data'))
-    print("keyword")
+    logging.error(os.listdir())
+    logging.error(os.listdir('./data'))
+    logging.error("keyword")
 
 
 with st.sidebar:
