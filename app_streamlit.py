@@ -167,7 +167,7 @@ with st.sidebar:
         df_shops, df_sensors = load_hourly_data()
 
 if shop is None:
-    st.write("Select a store for the menu on the left-hand side.")
+    st.write("Select a store from the menu on the left-hand side.")
 
 
 if sensor is not None or shop is not None:
