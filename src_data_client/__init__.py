@@ -1,3 +1,5 @@
+""" Creation of the data necessary for the API. """
+
 from datetime import datetime
 
 try:
@@ -7,17 +9,17 @@ except ModuleNotFoundError:
 
 
 def create_app() -> dict:
-    """ """
+    """Create the data for the API"""
 
     store_name = ["Madrid", "Paris", "Berlin", "Roma", "London"]
     store_n_sensors = [1, 20, 6, 4, 8]
     store_year_start = [2024, 2018, 2022, 2019, 2014]
 
-    store_dict = dict()
+    store_dict = {}
 
-    for i in range(len(store_name)):
-        store_dict[store_name[i]] = Store(
-            name=store_name[i],
+    for i, store in enumerate(store_name):
+        store_dict[store] = Store(
+            name=store,
             n_sensors=store_n_sensors[i],
             opening_date=datetime(store_year_start[i], 1, 1, 0),
             capacity=[(2024 - store_year_start[i] + 1) * x for x in [1000, 150]],
@@ -27,5 +29,5 @@ def create_app() -> dict:
 
 
 if __name__ == "__main__":
-    store_dict = create_app()
+    stores = create_app()
     # print(store_dict)

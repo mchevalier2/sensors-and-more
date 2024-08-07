@@ -1,4 +1,4 @@
-*.csv
+data/*.csv
 .DS_store
 venv
 src/__pycache__
@@ -6,3 +6,6 @@ tests/__pycache__
 __pycache__
 data
 *alias
+logs
+data_bckp
+airflow*

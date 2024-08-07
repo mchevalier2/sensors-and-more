@@ -1,49 +1,55 @@
+""" The streamlit app to visualise and query the sensor data """
+
+import os
 from datetime import datetime as dt
 
 import duckdb
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 
 
 def load_daily_data():
+    """A wrap-up function to load the daily data"""
     req = """
              SELECT *
-             FROM read_parquet('data/dat_sensors.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_sensors.parquet/*/*/*.parquet', hive_partitioning = true);
     """
-    df_sensors = duckdb.query(req).df()
+    sensors = duckdb.query(req).df()
 
     req = """
              SELECT *
-             FROM read_parquet('data/dat_shops.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_shops.parquet/*/*/*.parquet', hive_partitioning = true);
     """
-    df_shops = duckdb.query(req).df()
-    return df_shops, df_sensors
+    shops = duckdb.query(req).df()
+    return shops, sensors
 
 
 def load_hourly_data():
+    """A wrap-up function to load the hourly data"""
     req = """
              SELECT *
-             FROM read_parquet('data/dat_sensors_hours.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_sensors_hours.parquet/*/*/*.parquet', hive_partitioning = true);
     """
-    df_sensors = duckdb.query(req).df()
+    sensors = duckdb.query(req).df()
 
     req = """
              SELECT *
-             FROM read_parquet('data/dat_shops_hours.parquet/*/*/*.parquet', hive_partitioning = true);
+             FROM read_parquet('./data/dat_shops_hours.parquet/*/*/*.parquet', hive_partitioning = true);
     """
-    df_shops = duckdb.query(req).df()
-    return df_shops, df_sensors
+    shops = duckdb.query(req).df()
+    return shops, sensors
 
 
-def filter_day(df, cb):
+def filter_day(df: pd.DataFrame, cb: []) -> pd.DataFrame:
+    """Filter the input dataset for days checked in cb"""
     for i in range(7):
         if not cb[i]:
             df = df.drop(df[df.weekday == i].index)
     return df
 
 
-def filter_dates(df, dates, resol):
+def filter_dates(df: pd.DataFrame, dates: dt, resol: str) -> pd.DataFrame:
+    """Filter the input dataset for the days selected by slider"""
     date_end = dt(dates[1].year, dates[1].month, dates[1].day, 23)
     if resol == "Hourly":
         df["date"] = df[["date", "hour"]].apply(str_as_date_hour, axis=1)
@@ -56,30 +62,35 @@ def filter_dates(df, dates, resol):
     return df
 
 
-def filter_hours(df, dates):
+def filter_hours(df: pd.DataFrame, dates: dt) -> pd.DataFrame:
+    """Filter the input dataset for the hours selected by slider"""
     df = df.query(f"hour >= {dates[0]}").query(f"hour <= {dates[1]}")
     return df
 
 
-def str_as_date_day(s):
+def str_as_date_day(s: str) -> dt:
+    """Take a string and return a datetime"""
     return dt.strptime(s, "%Y-%m-%d")
 
 
-def str_as_date_hour(s):
+def str_as_date_hour(s: []) -> dt:
+    """Take a list of strings and return a datetime"""
     return dt.strptime(s.iloc[0] + " " + str(int(s.iloc[1])), "%Y-%m-%d %H")
 
 
-def create_slider_dates(dfplot):
+def create_slider_dates(df: pd.DataFrame) -> []:
+    """Create a streamlit slider and return the min/max values"""
     values = st.slider(
         "Select a range of dates",
-        str_as_date_day(dfplot.date.min()),
-        str_as_date_day(dfplot.date.max()),
-        (str_as_date_day(dfplot.date.min()), str_as_date_day(dfplot.date.max())),
+        str_as_date_day(df.date.min()),
+        str_as_date_day(df.date.max()),
+        (str_as_date_day(df.date.min()), str_as_date_day(df.date.max())),
     )
     return values
 
 
-def create_slider_openinghours(dfplot):
+def create_slider_openinghours() -> []:
+    """Create a streamlit slider and return the min/max values"""
     values = st.slider(
         "Select a range of hours",
         0,
@@ -87,6 +98,15 @@ def create_slider_openinghours(dfplot):
         (0, 23),
     )
     return values
+
+
+if "data" not in os.listdir():
+    os.mkdir("data")
+
+if "dat_sensors_hours.parquet" not in os.listdir("./data"):
+    os.system("cp ./minidata/dat.csv ./data")
+    with open("process_data.py", encoding="utf-8") as f:
+        exec(f.read())
 
 
 with st.sidebar:
@@ -108,14 +128,16 @@ with st.sidebar:
         ).df()
 
         sensor = st.selectbox(
-            "Which sensor would you like to access? If none are selected, will return the sum of all sensors.",
+            "Which sensor would you like to access? "
+            + "If none are selected, will return the sum of all sensors.",
             list_sensors,
             index=None,
             placeholder="Select a sensor...",
         )
     else:
         sensor = st.selectbox(
-            "Which sensor would you like to access? If none are selected, will return the sum of all sensors.",
+            "Which sensor would you like to access? "
+            + "If none are selected, will return the sum of all sensors.",
             "",
             index=None,
             placeholder="Select a shop first...",
@@ -154,7 +176,7 @@ if sensor is not None or shop is not None:
         dfplot = filter_day(dfplot, cb_days)
         dfplot = filter_dates(dfplot, values_dates, time_resol)
         if time_resol == "Hourly":
-            values_hours = create_slider_openinghours(dfplot)
+            values_hours = create_slider_openinghours()
             dfplot = filter_hours(dfplot, values_hours)
 
         tab2, tab3 = st.tabs(["Graphes", "Table"])
@@ -173,7 +195,7 @@ if sensor is not None or shop is not None:
         dfplot = filter_day(dfplot, cb_days)
         dfplot = filter_dates(dfplot, values_dates, time_resol)
         if time_resol == "Hourly":
-            values_hours = create_slider_openinghours(dfplot)
+            values_hours = create_slider_openinghours()
             dfplot = filter_hours(dfplot, values_hours)
 
         tab2, tab3 = st.tabs(["Graphes", "Table"])

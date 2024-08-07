@@ -1,23 +1,24 @@
 """ In this script, I process the data. """
 
 import os
-import sys
-from datetime import datetime, timedelta
 
 import duckdb
 import pandas as pd
-import shutils
 
-try:
-    os.system("rm -Rf ./data/dat_sensors_hours.parquet")
-    os.system("rm -Rf ./data/dat_sensors.parquet")
-    os.system("rm -Rf ./data/dat_shops.parquet")
-    os.system("rm -Rf ./data/dat_shops_hours.parquet")
-except:
-    print("Nothing to delete.")
+if "app_streamlit" in __file__:
+    os.chdir(__file__.split("app_streamlit.py", maxsplit=1)[0])
+else:
+    os.chdir(__file__.split("process_data.py", maxsplit=1)[0])
 
 
-def get_status(x):
+os.system("rm -Rf ./data/dat_sensors_hours.parquet")
+os.system("rm -Rf ./data/dat_sensors.parquet")
+os.system("rm -Rf ./data/dat_shops.parquet")
+os.system("rm -Rf ./data/dat_shops_hours.parquet")
+
+
+def get_status(x: str) -> str:
+    """A function to interpret the type of value returned by the API"""
     if x == -1:
         return "Measurement failed"
     if x == -2:
@@ -37,29 +38,29 @@ if True:
     print(df_hourly.query("status != 'OK'"))
     print(df_hourly["status"].value_counts())
     ## Daily trafic per sensor
-    req = """
+    REQ = """
              SELECT shop, date, weekday, sensor_id, sum(count) AS count
              FROM df_hourly
              GROUP BY shop, date, weekday, sensor_id
              ORDER BY shop, date, sensor_id
           """
-    df_daily = duckdb.query(req).df()
+    df_daily = duckdb.query(REQ).df()
     print(df_daily.head(10))
     ## Daily trafic per store_dict
-    req = """
+    REQ = """
              SELECT shop, date, weekday, sum(count) AS count
              FROM df_hourly
              GROUP BY shop, date, weekday
              ORDER BY shop, date
           """
-    df_shop = duckdb.query(req).df()
+    df_shop = duckdb.query(REQ).df()
     print(df_shop.head(10))
     print("<<<<< Prepping data\n\n\n\n")
 
 
 if True:
     print(">>>>> Creating data per shop, per sensor, per hour")
-    req = """
+    REQ = """
              WITH df3 AS (
                  SELECT shop, date, weekday, hour, sensor_id, count, status,
                         AVG(count) OVER(
@@ -77,7 +78,7 @@ if True:
              ORDER BY shop, date, hour, sensor_id
           """
 
-    df2 = duckdb.query(req).df()
+    df2 = duckdb.query(REQ).df()
     print(df2.query("hour==9").query("sensor_id==1").query("weekday==0").head(10))
     df2.to_csv("./data/dat_sensors_hours.csv")
     df2.to_parquet(
@@ -93,7 +94,7 @@ if True:
 
 if True:
     print(">>>>> Creating data per shop, per sensor, per day")
-    req = """
+    REQ = """
              WITH df3 AS (
                  SELECT shop, date, weekday, sensor_id, count,
                         AVG(count) OVER(
@@ -110,7 +111,7 @@ if True:
              FROM df3
              ORDER BY shop, date, sensor_id
           """
-    df2 = duckdb.query(req).df()
+    df2 = duckdb.query(REQ).df()
     print(df2.query("weekday==0").head(30))
     df2.to_csv("./data/dat_sensors.csv")
     df2.to_parquet(
@@ -126,7 +127,7 @@ if True:
 
 if True:
     print(">>>>> Creating data per shop, per day")
-    req = """
+    REQ = """
              WITH df3 AS (
                  SELECT shop, date, weekday, count,
                         AVG(count) OVER(
@@ -143,7 +144,7 @@ if True:
              FROM df3
              ORDER BY shop, date
           """
-    df2 = duckdb.query(req).df()
+    df2 = duckdb.query(REQ).df()
     print(df2.head(30))
     df2.to_csv("./data/dat_shops.csv")
     df2.to_parquet(
@@ -159,7 +160,7 @@ if True:
 
 if True:
     print(">>>>> Creating data per shop, per hour")
-    req = """
+    REQ = """
              WITH df4 AS (
                  SELECT shop, date, weekday, hour, sum(count) AS count
                  FROM df_hourly
@@ -183,7 +184,7 @@ if True:
              FROM df3
              ORDER BY shop, date, hour
           """
-    df2 = duckdb.query(req).df()
+    df2 = duckdb.query(REQ).df()
     print(df2.query("weekday==0").query("hour==9").head(30))
     df2.to_csv("./data/dat_shops_hours.csv")
     df2.to_parquet(

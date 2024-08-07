@@ -11,6 +11,8 @@ import requests
 
 from src_data_client.__init__ import create_app as create_store
 
+os.chdir(__file__.split("download_data_from_client.py", maxsplit=1)[0])
+
 
 def hourly_it(start: datetime, finish: datetime) -> None:
     """an iterator function to make an hourly loop between two dates"""
@@ -83,11 +85,7 @@ if __name__ == "__main__":
 
                 if np.random.rand() < 0.01:
                     dict1.update(
-                        {
-                            [x for x in dict1][
-                                np.random.randint(0, len(dict1) - 1)
-                            ]: "NULL"
-                        }
+                        {list(dict1)[np.random.randint(0, len(dict1) - 1)]: "NULL"}
                     )
 
                 sensor_data.append(dict1)
