@@ -41,7 +41,7 @@ Deprecated==1.2.14
 dill==0.3.8
 dnspython==2.6.1
 docutils==0.16
-duckdb==1.0.0
+duckdb==0.10.3
 email_validator==2.2.0
 fastapi==0.112.0
 fastparquet==2024.5.0
