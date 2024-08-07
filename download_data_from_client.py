@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -48,7 +49,7 @@ if __name__ == "__main__":
                 dict1.update({"date": str(datetime.date(hour))})
                 dict1.update({"hour": hour.hour})
                 dict1.update({"shop": shop_name})
-                dict1.update({"sensor_id": sensor_id})
+                dict1.update({"sensor_id": int(sensor_id)})
 
                 URL = (
                     "http://127.0.0.1:8000/"
@@ -56,20 +57,32 @@ if __name__ == "__main__":
                     + f"&year={hour.year}&month={hour.month}&day={hour.day}&hour={hour.hour}"
                     + f"&sensor_id={sensor_id}"
                 )
-                response = requests.get(URL, timeout=60)
+                try:
+                    response = requests.get(URL, timeout=60)
+                except OSError:
+                    print("Let's sleep on", URL)
+                    passing = False
+                    while not passing:
+                        time.sleep(5)
+                        try:
+                            response = requests.get(URL, timeout=60)
+                            passing = True
+                        except OSError:
+                            print("Let's keep sleeping on", URL)
+                            passing = False
+
                 if response.status_code == 200:
                     dict1.update({"count": response.text})
-                    dict1.update({"units": "visits"})
-                elif response.status_code == 204:
-                    ## In this case, the sensor did not work on that specific date and time
-                    dict1.update({"count": -1})
-                    dict1.update({"units": ""})
+                    if int(response.text) >= 0:
+                        dict1.update({"units": "visits"})
+                    else:
+                        dict1.update({"units": ""})
                 else:
                     print(URL)
                     raise Exception(f"Non-success status code: {response.status_code}")
 
                 if np.random.rand() < 0.01:
-                    dict1.update({[x for x in dict1][np.random.randint(0, len(dict1))]: "NULL"})
+                    dict1.update({[x for x in dict1][np.random.randint(0, len(dict1)-1)]: "NULL"})
 
                 sensor_data.append(dict1)
     df = pd.DataFrame(sensor_data).reindex(

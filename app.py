@@ -47,15 +47,15 @@ def visit(
         return JSONResponse(status_code=404, content="Enter a valid date")
 
     # Check the date is after the opening of the shop
-    if datetime(year, month, day, hour) < store_dict[store_name].opening_date:
+    if datetime(year, month, day, hour) <= store_dict[store_name].opening_date:
         return JSONResponse(
-            status_code=404,
-            content=f"No data before {store_dict[store_name].opening_date}",
+            status_code=200,
+            content=-2,
         )
 
     # Check the date is in the past
     if datetime.now() < datetime(year, month, day, hour):
-        return JSONResponse(status_code=404, content="Choose a date in the past")
+        return JSONResponse(status_code=404, content="Use a date in the past.")
 
     # If no sensor choose return the visit for the whole store
     if sensor_id is None:
@@ -70,9 +70,7 @@ def visit(
         )
 
     if visit_counts < 0:
-        return JSONResponse(
-            status_code=204, content="The sensor did not work on that date and time"
-        )
+        return JSONResponse(status_code=200, content=-1)
 
     return JSONResponse(status_code=200, content=visit_counts)
 
