@@ -95,4 +95,4 @@ if __name__ == "__main__":
         columns=["date", "hour", "shop", "sensor_id", "count", "units"]
     )
 
-    df.to_csv("./data/dat.csv", sep=",", index=False, encoding="utf-8")
+    df.to_csv("./data/latest_dat.csv", sep=",", index=False, encoding="utf-8")
