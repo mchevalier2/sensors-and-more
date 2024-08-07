@@ -82,7 +82,13 @@ if __name__ == "__main__":
                     raise Exception(f"Non-success status code: {response.status_code}")
 
                 if np.random.rand() < 0.01:
-                    dict1.update({[x for x in dict1][np.random.randint(0, len(dict1)-1)]: "NULL"})
+                    dict1.update(
+                        {
+                            [x for x in dict1][
+                                np.random.randint(0, len(dict1) - 1)
+                            ]: "NULL"
+                        }
+                    )
 
                 sensor_data.append(dict1)
     df = pd.DataFrame(sensor_data).reindex(

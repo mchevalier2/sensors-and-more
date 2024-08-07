@@ -22,22 +22,24 @@ def visit(
     sensor_id: Optional[int] = None,
 ) -> JSONResponse:
     """
-        Dealing with all possible combinations of parameters.
-        Returning the visit counts.
+    Dealing with all possible combinations of parameters.
+    Returning the visit counts.
     """
 
     # If the store is not in the dictionary
     if not store_name in store_dict:
-        s = f"Store '{store_name}' not found. It should one of the following " +\
-            f"names: {', '.join(store_dict.keys())}."
+        s = (
+            f"Store '{store_name}' not found. It should one of the following "
+            + f"names: {', '.join(store_dict.keys())}."
+        )
         return JSONResponse(status_code=404, content=s)
 
     # Check the value of sensor_id
     if sensor_id and (sensor_id > store_dict[store_name].n_sensors or sensor_id < 0):
         return JSONResponse(
             status_code=404,
-            content="Sensor_id for this shop should be between 0 and " +\
-                    str(store_dict[store_name].n_sensors-1),
+            content="Sensor_id for this shop should be between 0 and "
+            + str(store_dict[store_name].n_sensors - 1),
         )
 
     # Check the date
