@@ -8,11 +8,10 @@ import duckdb
 import pandas as pd
 import shutils
 
-
-if 'app_streamlit' in __file__:
-    os.chdir(__file__.split('app_streamlit.py')[0])
+if "app_streamlit" in __file__:
+    os.chdir(__file__.split("app_streamlit.py")[0])
 else:
-    os.chdir(__file__.split('process_data.py')[0])
+    os.chdir(__file__.split("process_data.py")[0])
 
 try:
     os.system("rm -Rf ./data/dat_sensors_hours.parquet")

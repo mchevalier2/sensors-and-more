@@ -11,7 +11,7 @@ import requests
 
 from src_data_client.__init__ import create_app as create_store
 
-os.chdir(__file__.split('download_data_from_client.py')[0])
+os.chdir(__file__.split("download_data_from_client.py")[0])
 
 
 def hourly_it(start: datetime, finish: datetime) -> None:

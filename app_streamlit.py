@@ -1,8 +1,8 @@
+import logging
 import os
 from datetime import datetime as dt
 
 import duckdb
-import logging
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -91,22 +91,15 @@ def create_slider_openinghours(dfplot):
     return values
 
 
-logging.error("keyword")
 logging.error(os.listdir())
-if 'data' not in os.listdir():
+if "data" not in os.listdir():
     os.mkdir("data")
 
-logging.error(os.listdir('./data/'))
-if "dat_sensors_hours.parquet" not in os.listdir('./data'):
-    #os.mkdir("data")
+if "dat_sensors_hours.parquet" not in os.listdir("./data"):
     os.system("cp ./minidata/dat.csv ./data")
-    exec(open('process_data.py').read())
-    #logging.error(__file__)
-    #logging.error(os.listdir('./data'))
-    #logging.error("keyword")
+    exec(open("process_data.py").read())
 
 
-logging.error(os.listdir('./data'))
 
 with st.sidebar:
     df_shops, df_sensors = load_daily_data()
