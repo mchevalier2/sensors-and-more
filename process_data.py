@@ -82,7 +82,7 @@ if True:
     df2.to_csv("./data/dat_sensors_hours.csv")
     df2.to_parquet(
         path="./data/dat_sensors_hours.parquet",
-        engine="pyarrow",
+        engine="fastparquet",
         compression=None,
         index=None,
         partition_cols=["shop", "weekday"],
@@ -115,7 +115,7 @@ if True:
     df2.to_csv("./data/dat_sensors.csv")
     df2.to_parquet(
         path="./data/dat_sensors.parquet",
-        engine="pyarrow",
+        engine="fastparquet",
         compression=None,
         index=None,
         partition_cols=["shop", "weekday"],
@@ -148,7 +148,7 @@ if True:
     df2.to_csv("./data/dat_shops.csv")
     df2.to_parquet(
         path="./data/dat_shops.parquet",
-        engine="pyarrow",
+        engine="fastparquet",
         compression=None,
         index=None,
         partition_cols=["shop", "weekday"],
@@ -188,12 +188,9 @@ if True:
     df2.to_csv("./data/dat_shops_hours.csv")
     df2.to_parquet(
         path="./data/dat_shops_hours.parquet",
-        engine="pyarrow",
+        engine="fastparquet",
         compression=None,
         index=None,
         partition_cols=["shop", "weekday"],
     )
     print("Files saved as dat_shops_hours (.csv, .parquet)")
-    print("<<<<< Creating data per shop, per hour\n\n\n\n")
-
-sys.exit()
