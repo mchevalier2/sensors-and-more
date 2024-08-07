@@ -101,6 +101,8 @@ if "data" not in os.listdir():
     logging.error("keyword")
 
 
+logging.error(os.listdir('./data'))
+
 with st.sidebar:
     df_shops, df_sensors = load_daily_data()
 
