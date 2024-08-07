@@ -9,7 +9,7 @@ import pandas as pd
 import shutils
 
 
-if 'app_streamlit' in __file:
+if 'app_streamlit' in __file__:
     os.chdir(__file__.split('app_streamlit.py')[0])
 else:
     os.chdir(__file__.split('process_data.py')[0])
