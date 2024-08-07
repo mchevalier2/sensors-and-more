@@ -44,7 +44,7 @@ def filter_day(df, cb):
 
 
 def filter_dates(df, dates, resol):
-    date_end = dt(dates[1].year, dates[1].month, dates[1].day, 23 )
+    date_end = dt(dates[1].year, dates[1].month, dates[1].day, 23)
     if resol == "Hourly":
         df["date"] = df[["date", "hour"]].apply(str_as_date_hour, axis=1)
     elif resol == "Daily":
