@@ -8,6 +8,8 @@ import duckdb
 import pandas as pd
 import shutils
 
+os.chdir(__file__.split('process_data.py')[0])
+
 try:
     os.system("rm -Rf ./data/dat_sensors_hours.parquet")
     os.system("rm -Rf ./data/dat_sensors.parquet")
