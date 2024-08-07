@@ -96,7 +96,7 @@ if "data" not in os.listdir():
     os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
     os.system("python process_data.py")
-    logging.error(os.listdir())
+    logging.error(__file__)
     logging.error(os.listdir('./data'))
     logging.error("keyword")
 
