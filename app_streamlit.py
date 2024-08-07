@@ -93,6 +93,8 @@ def create_slider_openinghours(dfplot):
 
 logging.error("keyword")
 logging.error(os.listdir())
+if 'data' not in os.list():
+    os.mkdir("data")
 if "dat_sensors_hours.parquet" not in os.listdir('./data'):
     #os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
