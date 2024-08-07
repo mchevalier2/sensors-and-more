@@ -29,7 +29,7 @@ def visit(
     # If the store is not in the dictionary
     if not store_name in store_dict:
         s = f"Store '{store_name}' not found. It should one of the following " +\
-            f"names: {", ".join(store_dict.keys())}."
+            f"names: {', '.join(store_dict.keys())}."
         return JSONResponse(status_code=404, content=s)
 
     # Check the value of sensor_id
