@@ -96,6 +96,7 @@ logging.error(os.listdir())
 if 'data' not in os.listdir():
     os.mkdir("data")
 
+logging.error(os.listdir('./data/'))
 if "dat_sensors_hours.parquet" not in os.listdir('./data'):
     #os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
