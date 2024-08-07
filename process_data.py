@@ -11,7 +11,6 @@ else:
     os.chdir(__file__.split("process_data.py", maxsplit=1)[0])
 
 
-
 os.system("rm -Rf ./data/dat_sensors_hours.parquet")
 os.system("rm -Rf ./data/dat_sensors.parquet")
 os.system("rm -Rf ./data/dat_shops.parquet")
@@ -19,7 +18,7 @@ os.system("rm -Rf ./data/dat_shops_hours.parquet")
 
 
 def get_status(x: str) -> str:
-    ''' A function to interpret the type of value returned by the API '''
+    """A function to interpret the type of value returned by the API"""
     if x == -1:
         return "Measurement failed"
     if x == -2:

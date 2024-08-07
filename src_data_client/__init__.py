@@ -1,6 +1,5 @@
 """ Creation of the data necessary for the API. """
 
-
 from datetime import datetime
 
 try:
@@ -10,7 +9,7 @@ except ModuleNotFoundError:
 
 
 def create_app() -> dict:
-    """ Create the data for the API """
+    """Create the data for the API"""
 
     store_name = ["Madrid", "Paris", "Berlin", "Roma", "London"]
     store_n_sensors = [1, 20, 6, 4, 8]
