@@ -100,9 +100,9 @@ if "dat_sensors_hours.parquet" not in os.listdir('./data'):
     #os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
     exec(open('process_data.py').read())
-    logging.error(__file__)
-    logging.error(os.listdir('./data'))
-    logging.error("keyword")
+    #logging.error(__file__)
+    #logging.error(os.listdir('./data'))
+    #logging.error("keyword")
 
 
 logging.error(os.listdir('./data'))
