@@ -19,16 +19,26 @@ class Store:
     """
 
     def __init__(
-        self, name: str, n_sensors: int = 1, opening_date: datetime = datetime.now()
+        self,
+        name: str,
+        n_sensors: int = 1,
+        opening_date: datetime = datetime.now(),
+        capacity: [int, int] = [1000, 150],
+        probs: [float, float] = [0.2, 0.05],
     ) -> None:
         # If the number provided is negative
-        # n_sensors = max(n_sensors, 0)
+        n_sensors = max(n_sensors, 0)
         self.name = name
         self.n_sensors = n_sensors
         self.sensors = {}
         for i in range(n_sensors):
             self.sensors[i] = Sensor(
-                i, 1000, 150, init_time=opening_date, p_fail=0.05, p_anom=0.2
+                i,
+                capacity[0],
+                capacity[1],
+                init_time=opening_date,
+                p_anom=probs[0],
+                p_fail=probs[1],
             )
         self.opening_date = opening_date
         #
