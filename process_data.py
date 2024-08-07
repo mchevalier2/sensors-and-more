@@ -27,7 +27,7 @@ def get_status(x):
 
 if True:
     print(">>>>> Prepping data")
-    df_hourly = pd.read_csv("./data/dat.csv")
+    df_hourly = pd.read_csv("./data/dat.csv").drop_duplicates()
     df_hourly = df_hourly.dropna(subset=["date", "hour", "shop", "sensor_id", "count"])
     df_hourly.insert(
         6, "weekday", [pd.Timestamp(x).weekday() for x in df_hourly["date"]]
@@ -85,7 +85,7 @@ if True:
         engine="pyarrow",
         compression=None,
         index=None,
-        partition_cols=["shop", "year", "weekday"],
+        partition_cols=["shop", "weekday"],
     )
     print("Files saved as dat_sensors_hours (.csv, .parquet)")
     print("<<<<< Creating data per shop, per sensor, per hour\n\n\n\n")
@@ -118,7 +118,7 @@ if True:
         engine="pyarrow",
         compression=None,
         index=None,
-        partition_cols=["shop", "year", "weekday"],
+        partition_cols=["shop", "weekday"],
     )
     print("Files saved as dat_sensors (.csv, .parquet)")
     print("<<<<< Creating data per shop, per sensor, per day\n\n\n\n")
@@ -151,7 +151,7 @@ if True:
         engine="pyarrow",
         compression=None,
         index=None,
-        partition_cols=["shop", "year", "weekday"],
+        partition_cols=["shop", "weekday"],
     )
     print("Files saved as dat_shops (.csv, .parquet)")
     print("<<<<< Creating data per shop, per day\n\n\n\n")
@@ -191,7 +191,9 @@ if True:
         engine="pyarrow",
         compression=None,
         index=None,
-        partition_cols=["shop", "year", "weekday"],
+        partition_cols=["shop", "weekday"],
     )
     print("Files saved as dat_shops_hours (.csv, .parquet)")
     print("<<<<< Creating data per shop, per hour\n\n\n\n")
+
+sys.exit()
