@@ -25,7 +25,7 @@ jobs:
           pip install isort
       - run: |
           isort --check --verbose .
-  data-dl:
+  unittest:
     runs-on: ubuntu-20.04
     steps:
         - uses: actions/checkout@v3
