@@ -1,3 +1,4 @@
+import os
 from datetime import datetime as dt
 
 import duckdb
@@ -89,7 +90,7 @@ def create_slider_openinghours(dfplot):
     return values
 
 
-if 'data' not in os.listdir():
+if "data" not in os.listdir():
     os.mkdir("data")
     os.system("cp ./minidata/dat.csv ./data")
     os.system("python process_data.py")
