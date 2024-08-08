@@ -21,7 +21,7 @@ with DAG(
 
     pull_daily_data = BashOperator(
         task_id="pull_daily_data",
-        bash_command=f"source {main_dir}venv/bin/activate && python {main_dir}download_data_from_client.py 2024-08-07 ",
+        bash_command=f"source {main_dir}venv/bin/activate && python {main_dir}download_data_from_client.py",
     )
 
     merging_datasets = BashOperator(
