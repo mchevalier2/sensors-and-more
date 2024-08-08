@@ -23,8 +23,8 @@ class Store:
         name: str,
         n_sensors: int = 1,
         opening_date: datetime = datetime.now(),
-        capacity: [int, int] = [1000, 150],
-        probs: [float, float] = [0.2, 0.05],
+        capacity: [] = [1000, 150],
+        probs: [] = [0.2, 0.05],
     ) -> None:
         # If the number provided is negative
         n_sensors = max(n_sensors, 0)
