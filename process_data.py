@@ -28,7 +28,10 @@ def get_status(x: str) -> str:
 
 if True:
     print(">>>>> Prepping data")
-    df_hourly = pd.read_csv("./data/dat.csv").drop_duplicates()
+    try:
+        df_hourly = pd.read_csv("./data/dat.csv").drop_duplicates()
+    except FileNotFoundError:
+        df_hourly = pd.read_csv("./data/latest_dat.csv").drop_duplicates()
     df_hourly = df_hourly.dropna(subset=["date", "hour", "shop", "sensor_id", "count"])
     df_hourly.insert(
         6, "weekday", [pd.Timestamp(x).weekday() for x in df_hourly["date"]]
