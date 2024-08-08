@@ -11,15 +11,15 @@ This data analysis and visualition project was triggered by a [data-upskilling](
 
 (*) In a real life situation, this step would be skipped as the client would provide the data.
 
-    **Skills involved**: Python, SQL, Bash, Git, Airflow, Object-oriented programming, Unit testing, API development, Data extraction, Data analysis, Data visualisation, streamlit cloud
+**Skills involved**: Python, SQL, Bash, Git, Airflow, Object-oriented programming, Unit testing, API development, Data extraction, Data analysis, Data visualisation, streamlit cloud
 
-    **Languages and packages used**: fastapi, pandas, datetime, numpy.random, unittest, uvicorn, requests, duckdb, streamlit, venv
+**Languages and packages used**: fastapi, pandas, datetime, numpy.random, unittest, uvicorn, requests, duckdb, streamlit, venv
 
 
 
-## The general idea
+## The project: what the client needs
 
-The client owns several stores in major European cities that he/she opened in the last decade. The client needs to know how many people frequent the different stores and detect long-term trends. The data available are sensor data that count how many people enter a store per hour. A store can have several doors, and thefore, several streams of sensor data. With his/her initial request, the client wants an interface where he/she can easily navigate the sensor data from the different stores. In particular, he/she wants the data at four different resolutions:
+The client owns several stores in major European cities that he/she opened over the last decade. The client needs to know how many people frequent the different stores to detect long-term trends. The data available are sensor data that count how many people enter a store per hour. A store can have several doors, and thefore, several streams of sensor data. With his/her initial request, the client wants an interface where he/she can easily navigate the sensor data from the different stores. In particular, he/she wants the data at four different resolutions:
 
 - Hourly data at the sensor level.
 - Hourly data at the store level.
@@ -27,12 +27,13 @@ The client owns several stores in major European cities that he/she opened in th
 - Daily data at the store level.
 
 
-
 **Note**: This project is primarily about showcasing my capacity at creating a robust infrasture and data processing pipeline, and not so much about the data illustrated in the final app.
 
 
 
-## The details
+## The pipeline
+
+![The data analysis pipeline of this project](jungle/pipeline_diagram.png?raw=true "The data analysis pipeline of this project")
 
 
 ### Creating the data
@@ -48,3 +49,10 @@ The client owns several stores in major European cities that he/she opened in th
 
 
 ## Next steps
+
+The project's data are built on simplistic assumptions that limit the type and diversity of analyses I can perform. However, the following items highlight how they could be complexified to produce more interesting analyses.
+
+- Sensors of different age
+- Adding long-term trends to the data
+- Account for the failed detection rates
+- Send warning emails when issues are detected.
