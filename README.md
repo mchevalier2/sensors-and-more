@@ -17,6 +17,25 @@ This data analysis and visualition project was triggered by a [data-upskilling](
 
 
 
+## How to use
+
+To safely use the different scripts available in this repo, you'll need to type the following commands:
+
+```
+    cd /path/to/folder
+    git clone https://github.com/mchevalier2/sensors-and-more.git
+    cd sensors-and-more
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+
+    ## <your-time-to-shine>
+```
+
+**Note**: The use of `venv` (i.e. _virtual environments_) is key to guarantee that this program does not interfere with your local environment. You can install and delete anything from a venv without impacting your machine.
+
+
+
 ## The project: what the client needs
 
 The client owns several stores in major European cities that he/she opened over the last decade. The client needs to know how many people frequent the different stores to detect long-term trends. The data available are sensor data that count how many people enter a store per hour. A store can have several doors, and thefore, several streams of sensor data. With his/her initial request, [the client wants an interface where he/she can easily navigate the sensor data from the different stores](https://sensors-and-more.streamlit.app). In particular, he/she asks to see the data at four different resolutions:
@@ -37,6 +56,8 @@ The client owns several stores in major European cities that he/she opened over 
 
 
 ### Creating the data
+
+_This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`, `numpy`, `unittest`, and `Object oriented programming`._
 
 In this dummy project, I need to create the data source. To do so, I created two Python classes, one for sensor data and a second for stores. Stores contain sensors.
 
@@ -97,12 +118,23 @@ Data can be generated and downloaded using the python script in this repo: ```py
 
 ### Accessing the data remotely
 
+<!---
+_This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`, `numpy`, `unittest`, and `Object oriented programming`._
+-->
+
+As a proxy for a real-life data project, I created a locally-run API with `fastapi` to query to access sensor date hourly.
 
 ### Processing the data
 
+<!---
+_This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`, `numpy`, `unittest`, and `Object oriented programming`._
+-->
 
 ### Analysing and visualising
 
+<!---
+_This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`, `numpy`, `unittest`, and `Object oriented programming`._
+-->
 
 ## Next steps
 
