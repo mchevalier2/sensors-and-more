@@ -143,6 +143,39 @@ However, I need to collect data from every sensor of every store over a long per
 
 _This part involved using `SQL`, `python`, `git`, `duckdb`, `pandas`, `datetime`, `black`, `isort`, and `pylint`._
 
+Data processing is necessary to clean and shape the raw sensor data obtained from the _'client's API'_ into processed datasets that address specific requests. The client first asked for hourly and daily data for each sensor and each store. This was easily done by aggregating data at different levels with `GROUP BY` clauses. The client also asked to quantify long-term trends in the data. As a first approximation, it was agreed with the client to calculate a percentage deviation from a long-term running mean. Because not every day and every hour are expected to be similar in a store, the average was calculated based on similar conditions. To determine if the traffic of a given Saturday was higher or lower than usual, it is necessary to compare Saturdays only with Saturdays since stores are usual more crowded on Saturdays relative to Tuesdays for instance (even if that is not the case with the `Sensor` data I generate). To calculate these averages, I used a **window function** including a `PARTITION BY` combined with a selection of the data of last three equivalent dates in addition to the one studied. The percentage change was then calculated by comparing the value of the selected time with that average.
+
+The following `SQL request` uses the raw data obtained from the API (`df_hourly` that contains hourly data from every sensor of every store) 1) to combine data from all sensors in a given store on a given day (`df_stores_daily`), 2) to calculate the running mean for every week days (Saturdays are compared to Saturdays), and finally, 3) to estimate the percentage difference, which can ultimately be used as a proxy of long-term traffic change in a store..
+
+```
+    WITH df_shops_daily AS (
+        SELECT shop, date, weekday, sum(count) AS count
+        FROM df_hourly
+        GROUP by shop, date, weekday
+    ),
+
+    tmp AS (
+        SELECT shop, date, weekday, count,
+               AVG(count) OVER(
+                       PARTITION BY shop, weekday
+                       ORDER BY date
+                       ROWS between 3 PRECEDING AND CURRENT ROW
+                       ) AS avg_count_4days
+        FROM df_shops_daily
+        ORDER BY shop, date
+    )
+
+    SELECT *,
+       100 * (count-avg_count_4days)/avg_count_4days AS perc_diff
+    FROM tmp
+    ORDER BY shop, date
+```
+
+All these data processing are done automatically with a python script that exports the processed data as `parquet` files. More requests could be added to this file if the client came with a second round of demands.
+
+```
+    python process_data.py
+```
 
 
 
@@ -156,7 +189,7 @@ _This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`,
 -->
 
 
-Because the API is not live online (yet!), the [streamlit cloud app](https://sensors-and-more.streamlit.app) is built with data collected between July 1st to August 7th 2024. These data are part of the GitHub repo and are saved in the streamlit_data folder. In a real-life situation, I would not include the data with the interface. If possible, I would try to access the data live, and if not possible, I would create a dataset that I would save on a cloud service to be dynamically downloaded on loading by the programme.
+**Note**: Because the API is not live online (yet!), the [streamlit cloud app](https://sensors-and-more.streamlit.app) is built with data collected between July 1st to August 7th 2024. These data are part of the GitHub repo and are saved in the streamlit_data folder. In a real-life situation, I would not include the data with the interface. If possible, I would try to access the data live, and if not possible, I would create a dataset that I would save on a cloud service to be dynamically downloaded when loading the programme.
 
 
 ## Next steps
