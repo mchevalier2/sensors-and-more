@@ -13,7 +13,7 @@ This data analysis and visualition project was triggered by a [data-upskilling](
 
 **Skills involved**: `Python`, `SQL`, `Bash`, `Git`, `Airflow`, `Object-oriented programming`, `Unit testing`, `API development`, `Data extraction`, `Data analysis`, `Data visualisation`, `streamlit cloud`
 
-**Languages and packages used**: `fastapi`, `pandas`, `datetime`, `numpy.random`, `unittest`, `uvicorn`, `requests`, `duckdb`, `streamlit`, `venv`, `black`, `isort`, `pylint`
+**Languages and packages used**: `fastapi`, `pandas`, `datetime`, `numpy.random`, `parquet`, `unittest`, `uvicorn`, `requests`, `duckdb`, `streamlit`, `venv`, `black`, `isort`, `pylint`
 
 
 
@@ -141,7 +141,7 @@ However, I need to collect data from every sensor of every store over a long per
 
 ### Processing the data
 
-_This part involved using `SQL`, `python`, `git`, `duckdb`, `pandas`, `datetime`, `black`, `isort`, and `pylint`._
+_This part involved using `SQL`, `python`, `git`, `duckdb`, `pandas`, `parquet`, `datetime`, `black`, `isort`, and `pylint`._
 
 Data processing is necessary to clean and shape the raw sensor data obtained from the _'client's API'_ into processed datasets that address specific requests. The client first asked for hourly and daily data for each sensor and each store. This was easily done by aggregating data at different levels with `GROUP BY` clauses. The client also asked to quantify long-term trends in the data. As a first approximation, it was agreed with the client to calculate a percentage deviation from a long-term running mean. Because not every day and every hour are expected to be similar in a store, the average was calculated based on similar conditions. To determine if the traffic of a given Saturday was higher or lower than usual, it is necessary to compare Saturdays only with Saturdays since stores are usual more crowded on Saturdays relative to Tuesdays for instance (even if that is not the case with the `Sensor` data I generate). To calculate these averages, I used a **window function** including a `PARTITION BY` combined with a selection of the data of last three equivalent dates in addition to the one studied. The percentage change was then calculated by comparing the value of the selected time with that average.
 
@@ -179,25 +179,40 @@ All these data processing are done automatically with a python script that expor
 
 
 
+### Automatic acquisition and processing of hourly data
+
+_This part involved using `Airflow` and `bash`._
+
+
+To simulate real-life conditions, I also used a local `airflow` server to automatise the acquisition and processing of these data. I created a DAG (Directed Acyclic Graph) to be ran every hour to pull the latest data from the API, to merge them with an existing dataset, and to update the `parquet` files used by the vidual interface (see next section). With that, the client always has access to the latest data and could potentially be informed in real-time about a potential problem in one of the stores.
 
 
 
 ### Analysing and visualising
 
-<!---
-_This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`, `numpy`, `unittest`, and `Object oriented programming`._
--->
+_This part involved using `Python`, `SQL`, `streamlit`, `git`, `pandas`, `duckdb`, `black`, `isort`, and `pylint`._
 
 
-**Note**: Because the API is not live online (yet!), the [streamlit cloud app](https://sensors-and-more.streamlit.app) is built with data collected between July 1st to August 7th 2024. These data are part of the GitHub repo and are saved in the streamlit_data folder. In a real-life situation, I would not include the data with the interface. If possible, I would try to access the data live, and if not possible, I would create a dataset that I would save on a cloud service to be dynamically downloaded when loading the programme.
+Developping the graphical interface to the data is always the fun part because that's when all the work starts to make sense. In this application, I opted for a simple design with a sidebar with a few selection options that meets the client's needs (selection per store, per sensor, daily, hourly, specific days of the week). The data can be seen as timeseries on the first tab and as tables on the second tab. Tables can be downloaded as CSV for convenience. A feature that the client didn't ask but that I added were two sliders to refine the data selection between two dates or between two hour spans (e.g. one can focus on morning data).
 
 
-## Next steps
+Finally, I uploaded the `streamlit app` to [streamlit community cloud](https://streamlit.io/cloud) to enable an easy access to the data visualisation tool. This process was extremely useful as it forced me to re-assess all my absolute and relative paths to ensure that the all bundle could be easily transferred to another machine, thus giving additional robustness to the entire pipeline. The app is available from https://sensors-and-more.streamlit.app.
 
-The project's data are built on simplistic assumptions that limit the type and diversity of analyses I can perform. However, the following items highlight how they could be complexified to produce more interesting analyses.
 
-- Sensors of different age, with age that impacts the rate of failures. And at some point the sensor needs to be changed.
-- Adding long-term trends to the data
-- Account for the failed detection rates
-- Send warning emails when issues are detected.
-- API live online to directly query data.
+
+**Note**: Because the API is not live online (yet!), the [streamlit cloud app](https://sensors-and-more.streamlit.app) is built with static data collected between July 1st to August 7th 2024. These data are part of the GitHub repo and are saved in the streamlit_data folder. In a real-life situation, I would not include the data with the interface. I would try to pull the data live, and if not possible, I would create a dataset and save on a cloud service to be dynamically downloaded when needed by the programme.
+
+
+## Concluding remarks
+
+This project was a playful application of many concepts I just learned. I am well aware the final product it is far from perfect and that many improvements could be added to it. In particular, the project's data are built on simplistic assumptions that limit the type and diversity of analyses I can perform. However, **the main goal of this exercise was to demonstrate my capacity to create a complete pipeline data generation, data extraction, data processing, and data visualisation using common tools**. I have achieved this.
+
+If this was a real project, here are some elements that I could add to produce more interesting analyses.
+
+- The sensors could age and produce more and more failures over time. A useful application would be to trigger an automatic warning email once the number of failures passes a fixed threshold, indicating that it needs replacement.
+- The data could exhibit some trends, with phases of expansion for some stores.
+- If some doors (i.e. sensors) are barely used by customers, the store owner could decide to block it and to reorganise the store accordingly to add more products and/or better crowd flow.
+- The API could go live online to enable the steramlit app to directly query data the latest data.
+- And many more ...
+
+While potentially very fun to implement, **the next steps for me will rather be to use these tools to address the specific needs of _real_ clients**. If you are interested in my skills, contact me at pro@manuelchevalier.com
