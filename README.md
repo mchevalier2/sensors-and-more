@@ -218,7 +218,7 @@ If this was a real project, here are some elements that I could add to produce m
 - The sensors could age and produce more and more failures over time. A useful application would be to trigger an automatic warning email once the number of failures passes a fixed threshold, indicating that it needs replacement.
 - The data could exhibit some trends, with phases of expansion for some stores.
 - If some doors (i.e. sensors) are barely used by customers, the store owner could decide to block it and to reorganise the store accordingly to add more products and/or better crowd flow.
-- The API could go live online to enable the steramlit app to directly query data the latest data.
+- The API could go live online to enable the steramlit app to directly query data the latest data. This could be done using, for instance, [render](https://dashboard.render.com).
 - And many more ...
 
 While potentially very fun to implement, **the next steps for me will rather be to use these tools to address the specific needs of _real_ clients**. If you are interested in my skills, contact me at pro@manuelchevalier.com
