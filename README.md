@@ -11,9 +11,15 @@ This data analysis and visualition project was triggered by a [data-upskilling](
 
 (*) In a real life situation, this step would be skipped as the client would provide the data.
 
-**Skills involved**: `Python`, `SQL`, `Bash`, `Git`, `Airflow`, `Object-oriented programming`, `Unit testing`, `API development`, `Data extraction`, `Data analysis`, `Data visualisation`, `streamlit cloud`
 
-**Languages and packages used**: `fastapi`, `pandas`, `datetime`, `numpy.random`, `parquet`, `unittest`, `uvicorn`, `requests`, `duckdb`, `streamlit`, `venv`, `black`, `isort`, `pylint`
+With this dummy project, I intend to demonstrate **my capacity to create a complete pipeline data generation, data extraction, data processing, and data visualisation using common tools**. While this project could be improved on many aspects, **the next steps for me will rather be to focus on using these tools to address the specific needs of _real_ clients**. If you are interested in my skills, contact me at pro@manuelchevalier.com
+
+
+**Skills involved**: `Project organisation`, `API development`, `Continuous integration`, `Data extraction`, `Data analysis`, `Data visualisation`, `streamlit cloud`, `Object-oriented programming`
+
+**Languages and packages used**: `Python`, `SQL`, `Bash`, `Git`, `Airflow`, `fastapi`, `pandas`, `datetime`, `numpy.random`, `parquet`, `unittest`, `uvicorn`, `requests`, `duckdb`, `streamlit`, `venv`, `black`, `isort`, `pylint`
+
+
 
 
 
@@ -52,7 +58,7 @@ The client owns several stores in major European cities that she opened over the
 
 ## The pipeline
 
-![The data analysis pipeline of this project](jungle/pipeline_diagram.png?raw=true "The data analysis pipeline of this project")
+![The data analysis pipeline of this project](jungle/pipeline_diagram/pipeline_diagram.001.png?raw=true "The data analysis pipeline of this project")
 
 
 ### Creating the data
