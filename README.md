@@ -61,7 +61,7 @@ The client owns several stores in major European cities that she opened over the
 ![The data analysis pipeline of this project](jungle/pipeline_diagram/pipeline_diagram.001.png?raw=true "The data analysis pipeline of this project")
 
 
-### Creating the data
+### Creating the data stream
 
 _This part involved using `python`, `bash`, `git`, `venv`, `pandas`, `datetime`, `numpy`, `unittest`, `black`, `isort`, `pylint`, and `Object oriented programming`._
 
@@ -121,7 +121,7 @@ The client's data can be accessed remotely with an API.
 
 
 
-### Accessing the data remotely
+### Importing the data from a remote data portal
 
 _This part involved using `python`, `API development`, `Data extraction`, `bash`, `git`, `pandas`, `datetime`, `fastapi`, `black`, `isort`, and `pylint`._
 
