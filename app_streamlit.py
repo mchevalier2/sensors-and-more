@@ -104,7 +104,7 @@ if "data" not in os.listdir():
     os.mkdir("data")
 
 if "dat_sensors_hours.parquet" not in os.listdir("./data"):
-    os.system("cp ./minidata/dat.csv ./data")
+    os.system("cp ./streamlit_data/dat.csv ./data")
     with open("process_data.py", encoding="utf-8") as f:
         exec(f.read())
 
