@@ -9,6 +9,12 @@ This data analysis and visualition project was triggered by a [data-upskilling](
 
 
 
+## The general idea
+
+==test==
+
+
+
 This project will follow five different routes:
 1. Creating an API that generates data
 2. A python script to collect data
@@ -17,10 +23,6 @@ This project will follow five different routes:
 5. An Airflow DAG to automatise the data update.
 
 Let's get started.
-
-## The general idea
-
-
 
 ## The details
 
